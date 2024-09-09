@@ -1,0 +1,35 @@
+<!-- Hero section -->
+<section id="hero">
+    <div class="hero-content">
+        <h1 class="hero-title">PC Shop</h1>
+        <p class="hero-subtitle">Find the best deals for your next PC</p>
+        <button mat-raised-button color="accent" class="hero-btn">Shop now</button>
+    </div>
+    <div class="non-hero-content"></div>
+</section>
+<!-- Computer list-->
+<section id="computers">
+    <div class="computer-card" *ngFor="let computer of computers$ | async as list">
+        <div class="computer-img">
+            <img [src]="computer.thumbnail" [alt]="computer.name" onerror="this.onerror=null;this.src='/assets/images/macbookpro14inches.jpg'"/>
+        </div>
+        <div class="computer-info">
+            <h2>{{ computer.name }}</h2>
+            <p> {{ computer.description }}</p>
+            <p> ${{ computer.price }}</p>
+            <p> R{{ computer.rating }}</p>
+        </div>
+        <div class="rating">
+            <span class="stars">★★★★★</span>
+        </div>
+        <div class="actions">
+            <button mat-icon-button aria-hidden="false" aria-label="Add to cart" (click)="addToCart(computer)" color="accent">
+                <mat-icon>add_shopping_cart</mat-icon>
+            </button>
+            <button mat-icon-button aria-hidden="false" aria-label="Save" color="accent">
+                <mat-icon>bookmark</mat-icon>
+            </button>
+            <button mat-raised-button color="accent" (click)="buyComputerNow(computer)">Buy now</button>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,45 @@
+services:
+  db:
+    container_name: pcshop-postgres
+    image: postgres:14.1
+    environment:
+      POSTGRES_USER: stevenguyendev
+      POSTGRES_PASSWORD: password
+      PGDATA: /data/postgres
+    volumes:
+      - db:/data/postgres
+    ports:
+      - "5332:5432"
+    networks:
+      - db
+    restart: unless-stopped
+  pcshop-api:
+    container_name: pcshop-api
+    image: stevenguyendev/pcshop-api
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/pcshop
+    ports:
+      - "8080:8080"
+    networks:
+      - db
+    depends_on:
+      - db
+    restart: unless-stopped
+  pcshop-spa-angular:
+    container_name: pcshop-spa-angular
+    image: stevenguyendev/pcshop-spa-angular
+    build:
+      context: frontend
+      args:
+        api_base_url: http://localhost:8088
+    ports:
+      - "4200:4200"
+    depends_on:
+      - pcshop-api
+    restart: unless-stopped
+networks:
+  db:
+    driver: bridge
+
+volumes:
+  db:
